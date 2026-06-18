@@ -2,11 +2,11 @@
 
 With this online(html) video player you can watch `Bandersnatch` episode of `Black Mirror` **interactively**.
 
-[Live demo](https://mehotkhan.github.io/BandersnatchInteractive/)
+[Live demo](https://mohetios.github.io/BandersnatchInteractive/)
 
 ## How to use
 
-The only thing you need is 5hours video file of `Bandersnatch` episode, Drag & drop the file in [this](https://mehotkhan.github.io/BandersnatchInteractive/) page and enjoy!
+The only thing you need is 5hours video file of `Bandersnatch` episode, Drag & drop the file in [this](https://mohetios.github.io/BandersnatchInteractive/) page and enjoy!
 
 ## Screenshot
 
@@ -21,7 +21,7 @@ The only thing you need is 5hours video file of `Bandersnatch` episode, Drag & d
 
 - Only work on google chrome (Doesn't work on Firefox; codec problems)
 - Download `Bandersnatch` video file (`5:12:14`)
-- Drag it on white box on [page](https://mehotkhan.github.io/BandersnatchInteractive/) :)
+- Drag it on white box on [page](https://mohetios.github.io/BandersnatchInteractive/) :)
 - `Persian`, `English`, `Arabic`, `Spanish`, `Hebrew`, `Portuguese`, `Greek`, `Turkish`, `Polish`, `Indonesian`, `Russian` , `French` , `Hungarian` , `Korean` ,`German`, `chinese`
 
 \*subtitle available, If you want add another language subtitle, tell me.
