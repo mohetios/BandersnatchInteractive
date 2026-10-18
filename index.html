@@ -113,10 +113,11 @@
 								<h6>Keyboard controls</h6>
 								<li><kbd>F</kbd> - Toggle fullscreen</li>
 								<li><kbd>R</kbd> - Restart video</li>
-								<li><kbd>→</kbd> / <kbd>←</kbd> - Jump to the next / previous segment (or interaction
+								<li><kbd>&rarr;</kbd> / <kbd>&larr;</kbd> - Jump to the next / previous segment (or interaction
 									zone)</li>
-								<li><kbd>↑</kbd> / <kbd>↓</kbd> - Speed up / slow down playback</li>
-								<li><kbd>Space</kbd> - Toggle play and pause</li>
+								<li><kbd>&uarr;</kbd> / <kbd>&darr;</kbd> - Speed up / slow down playback</li>
+								<li><kbd>J</kbd> / <kbd>L</kbd> - Seek back / forward 10 seconds</li>
+								<li><kbd>K</kbd> or <kbd>Space</kbd> - Toggle play and pause</li>
 							</ul>
 						</div>
 					</div>
@@ -172,6 +173,16 @@
 							<ul id="interactionZones"></ul>
 							<ul id="nextSegments"></ul>
 							<ul id="nextSegment"></ul>
+						</div>
+					</div>
+					<div id="video-controls" class="video-controls">
+						<div class="video-controls-bar">
+							<button id="btn-replay" type="button" title="Rewind 10s (J)">&#8634; 10s</button>
+							<button id="btn-play" type="button" title="Play/Pause (Space)">&#9654;</button>
+							<button id="btn-forward" type="button" title="Forward 10s (L)">10s &#8635;</button>
+							<span id="time-display">0:00 / 0:00</span>
+							<input id="seek-bar" type="range" min="0" max="1000" value="0" step="1" title="Seek">
+							<button id="btn-fullscreen" type="button" title="Fullscreen (F)">&#9974;</button>
 						</div>
 					</div>
 				</div>

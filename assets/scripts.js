@@ -622,6 +622,90 @@ window.onload = function() {
 
 	video_selector.ontimeupdate = ontimeupdate;
 
+	// Custom video controls wiring
+	var seekBar = document.getElementById("seek-bar");
+	var timeDisplay = document.getElementById("time-display");
+	var btnReplay = document.getElementById("btn-replay");
+	var btnForward = document.getElementById("btn-forward");
+	var btnPlay = document.getElementById("btn-play");
+	var btnFs = document.getElementById("btn-fullscreen");
+	var controlsBar = document.getElementById("video-controls");
+
+	function durationMs() { return (video_selector.duration || 0) * 1000.0; }
+
+	function updateSeekBar() {
+		var curMs = video_selector.currentTime * 1000.0;
+		var durMs = durationMs();
+		if (seekBar && durMs > 0) {
+			// don't fight the user while they're dragging
+			if (!seekBar._dragging)
+				seekBar.value = Math.round((curMs / durMs) * seekBar.max);
+		}
+		if (timeDisplay)
+			timeDisplay.textContent = formatTime(curMs) + ' / ' + formatTime(durMs);
+		if (btnPlay)
+			btnPlay.textContent = video_selector.paused ? '\u25B6' : '\u23F8';
+	}
+
+	if (btnReplay) btnReplay.onclick = function () { seekBy(-10000); };
+	if (btnForward) btnForward.onclick = function () { seekBy(10000); };
+	if (btnPlay) btnPlay.onclick = function () { togglePlayPause(); };
+	if (btnFs) btnFs.onclick = function () { toggleFullScreen(); };
+
+	if (seekBar) {
+		seekBar.addEventListener('input', function () {
+			seekBar._dragging = true;
+			var durMs = durationMs();
+			if (durMs > 0) {
+				var targetMs = (seekBar.value / seekBar.max) * durMs;
+				if (timeDisplay)
+					timeDisplay.textContent = formatTime(targetMs) + ' / ' + formatTime(durMs);
+			}
+		});
+		seekBar.addEventListener('change', function () {
+			var durMs = durationMs();
+			if (durMs > 0) {
+				var targetMs = (seekBar.value / seekBar.max) * durMs;
+				seek(Math.round(targetMs));
+			}
+			seekBar._dragging = false;
+			seekBar.blur();
+		});
+		// keyboard scrubbing on the bar itself
+		seekBar.addEventListener('keydown', function (e) {
+			if (e.key == 'ArrowLeft') { seekBy(-5000); e.preventDefault(); }
+			if (e.key == 'ArrowRight') { seekBy(5000); e.preventDefault(); }
+		});
+	}
+
+	// keep the bar + time in sync on progress and play/pause
+	video_selector.addEventListener('timeupdate', updateSeekBar);
+	video_selector.addEventListener('durationchange', updateSeekBar);
+	video_selector.addEventListener('play', updateSeekBar);
+	video_selector.addEventListener('pause', updateSeekBar);
+	video_selector.addEventListener('loadedmetadata', updateSeekBar);
+
+	// auto-hide the custom controls when idle + show on mouse move
+	var hideTimerId = 0;
+	function showControls() {
+		controlsBar && (controlsBar.style.opacity = '1');
+		controlsBar && (controlsBar.style.pointerEvents = 'auto');
+		if (hideTimerId) clearTimeout(hideTimerId);
+		hideTimerId = setTimeout(function () {
+			if (!video_selector.paused) {
+				controlsBar && (controlsBar.style.opacity = '0');
+				controlsBar && (controlsBar.style.pointerEvents = 'none');
+			}
+		}, 3000);
+	}
+	if (controlsBar) {
+		showControls();
+		video_selector.addEventListener('mousemove', showControls);
+		document.getElementById('wrapper-video').addEventListener('mousemove', showControls);
+		video_selector.addEventListener('play', showControls);
+		video_selector.addEventListener('pause', showControls);
+	}
+
 	var c = document.getElementById("c");
 	c.ondblclick = toggleFullScreen;
 	video_selector.onclick = function (e) {
@@ -636,8 +720,12 @@ window.onload = function() {
 			toggleFullScreen();
 		if (e.code == 'KeyR')
 			playSegment(0);
-		if (e.code == 'Space')
+		if (e.code == 'Space' || e.code == 'KeyK')
 			togglePlayPause();
+		if (e.code == 'KeyJ')
+			seekBy(-10000);
+		if (e.code == 'KeyL')
+			seekBy(10000);
 	};
 	video_selector.onkeydown = function(e) {
 		if (e.code == 'Space')
@@ -666,6 +754,30 @@ function seek(ms) {
 	console.log('seek', ms);
 	document.getElementById("video").currentTime = ms / 1000.0;
 	ontimeupdate(null);
+}
+
+// Seek relative to the current position (delta in milliseconds; negative rewinds).
+function seekBy(deltaMs) {
+	var v = document.getElementById("video");
+	var target = v.currentTime * 1000.0 + deltaMs;
+	if (target < 0) target = 0;
+	var durationMs = (v.duration || 0) * 1000.0;
+	if (durationMs && target > durationMs) target = durationMs;
+	seek(Math.round(target));
+}
+
+// Format milliseconds as m:ss or h:mm:ss.
+function formatTime(ms) {
+	if (!isFinite(ms) || ms < 0) ms = 0;
+	var s = Math.floor(ms / 1000);
+	var h = Math.floor(s / 3600);
+	s = s % 3600;
+	var m = Math.floor(s / 60);
+	s = s % 60;
+	var ss = (s < 10 ? '0' : '') + s;
+	if (h > 0)
+		return h + ':' + (m < 10 ? '0' : '') + m + ':' + ss;
+	return m + ':' + ss;
 }
 
 function choice(choiceIndex) {
