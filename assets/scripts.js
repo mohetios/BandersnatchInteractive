@@ -675,6 +675,7 @@ window.onload = function() {
 		seekBar.addEventListener('keydown', function (e) {
 			if (e.key == 'ArrowLeft') { seekBy(-5000); e.preventDefault(); }
 			if (e.key == 'ArrowRight') { seekBy(5000); e.preventDefault(); }
+			e.stopPropagation(); // don't also trigger the segment jump / speed shortcuts
 		});
 	}
 
@@ -699,6 +700,12 @@ window.onload = function() {
 		}, 3000);
 	}
 	if (controlsBar) {
+		// #c toggles fullscreen on dblclick; double-clicking +10s must not
+		controlsBar.addEventListener('dblclick', function (e) { e.stopPropagation(); });
+		// drop focus after a click so Space isn't handled twice (keypress + button click)
+		controlsBar.addEventListener('click', function (e) {
+			if (e.target.tagName == 'BUTTON') e.target.blur();
+		});
 		showControls();
 		video_selector.addEventListener('mousemove', showControls);
 		document.getElementById('wrapper-video').addEventListener('mousemove', showControls);
