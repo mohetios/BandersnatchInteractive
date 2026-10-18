@@ -796,7 +796,8 @@ function choice(choiceIndex) {
 
 function applyImpression(impressionData) {
 	if (impressionData && impressionData.type == 'userState') {
-		for (const [variable, value] of Object.entries(impressionData.data.persistent)) {
+		// some choices (e.g. SS8 "GET RABBIT FROM DAD") carry userState with empty data
+		for (const [variable, value] of Object.entries(impressionData.data.persistent || {})) {
 			let key = "persistentState_" + variable;
 			console.log('persistentState set', variable, '=', value, '(was', key in ls ? ls[key] : 'unset', ')');
 			ls[key] = JSON.stringify(value);
