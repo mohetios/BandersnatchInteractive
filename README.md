@@ -22,7 +22,7 @@ The only thing you need is 5hours video file of `Bandersnatch` episode, Drag & d
 - Only work on google chrome (Doesn't work on Firefox; codec problems)
 - Download `Bandersnatch` video file (`5:12:14`)
 - Drag it on white box on [page](https://mohetios.github.io/BandersnatchInteractive/) :)
-- `Persian`, `English`, `Arabic`, `Spanish`, `Hebrew`, `Portuguese`, `Greek`, `Turkish`, `Polish`, `Indonesian`, `Russian` , `French` , `Hungarian` , `Korean` ,`German`, `chinese`
+- `Persian`, `English`, `Arabic`, `Spanish`, `Hebrew`, `Portuguese (Portugal)`, `Portuguese (Brazil)`, `Greek`, `Turkish`, `Polish`, `Indonesian`, `Russian` , `French` , `Hungarian` , `Korean` ,`German`, `chinese`, `Italian`
 
 \*subtitle available, If you want add another language subtitle, tell me.
 
